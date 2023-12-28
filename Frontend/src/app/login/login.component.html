@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="text-center loginTitle">
+          <h1>Login</h1>
+          <h6>Please enter Username and Password</h6>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Username</label>
+            <input
+              type="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Username"
+              formControlName="username"
+            />
+            <div
+              *ngIf="
+                loginForm.get('username')?.invalid &&
+                (loginForm.get('username')?.dirty ||
+                  loginForm.get('username')?.touched)
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="loginForm.get('username')?.hasError('required')"
+              >
+                Username is required</small
+              >
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"
+              >Password</label
+            >
+            <input
+              type="password"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Password"
+              formControlName="password"
+            />
+            <div
+              *ngIf="
+                loginForm.get('password')?.invalid &&
+                (loginForm.get('password')?.dirty ||
+                  loginForm.get('password')?.touched)
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="loginForm.get('password')?.hasError('required')"
+              >
+                Password is required</small
+              >
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              [disabled]="loginForm.invalid"
+            >
+              Login
+            </button>
+            <span
+              >Need an account?
+              <a href="/signup">Register</a>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

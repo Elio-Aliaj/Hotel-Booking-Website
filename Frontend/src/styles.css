@@ -1,0 +1,20 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+  background-image: linear-gradient(
+    to bottom right,
+    #16213e,
+    #0f3460,
+    #533483,
+    #e94560
+  );
+  height: 100vh;
+  width: 100%;
+  color: #fff;
+  overflow: hidden;
+}

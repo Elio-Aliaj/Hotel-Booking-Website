@@ -1,0 +1,20 @@
+.list-section {
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+  height: calc(100vh - 60px);
+  scrollbar-color: black;
+}
+.list-section::-webkit-scrollbar {
+  width: 0.8em;
+}
+.list-section::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.list-section::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 20px;
+}
+.card-shadow {
+  box-shadow: 2px 2px 8px 1px black;
+}

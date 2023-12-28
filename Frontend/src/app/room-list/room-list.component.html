@@ -1,0 +1,44 @@
+<div>
+  <nav class="navbar navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">{{ username }}</a>
+      <button class="btn btn-outline-success" (click)="logOut()">
+        Log Out
+      </button>
+    </div>
+  </nav>
+  <section class="list-section p-3">
+    <div class="row row-cols-1 row-cols-md-3 g-3 mt-0">
+      <div class="col" *ngFor="let room of rooms">
+        <div class="card card-shadow">
+          <img
+            src="https://imgs.search.brave.com/6OLvpQ982pCVBbiMhkInY5aWbU3AABWXY5tyLzooJT8/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTg0/NjA5MDU3L3Bob3Rv/L2x1eHVyeS1ob3Rl/bC1yb29tLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1OTjFP/VGRkdlV4R3gtQ05T/SFllMlNRdnNWN2Rp/TWc4QUJ5SWxuSE0z/OVh3PQ"
+            class="card-img-top"
+            alt="Room Photo"
+            style="height: fit-content"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Room Number {{ room.room_id }}</h5>
+            <p class="card-text">
+              “Book your stay now and enjoy a breathtaking view of the sea from
+              our spacious and well-lit rooms. This room is located on the
+              <b>{{ room.orientation }}</b> side, with a room space of
+              <b>{{ room.surface }}</b> square meters. The price for a night's
+              stay is <b>${{ room.nightly_price }}</b
+              >!”
+            </p>
+            <div class="d-flex justify-content-center">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                (click)="book(room.room_id)"
+              >
+                Book
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

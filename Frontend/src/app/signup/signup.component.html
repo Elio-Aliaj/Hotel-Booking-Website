@@ -1,0 +1,168 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="text-center">
+          <h1>Sign Up</h1>
+          <h6>Register in to the system</h6>
+        </div>
+        <form [formGroup]="signupForm" (ngSubmit)="signUp()">
+          <div class="mb-3">
+            <label for="first_name" class="form-label">First Name</label>
+            <input
+              formControlName="first_name"
+              type="text"
+              class="form-control"
+              id="first_name"
+              placeholder="First Name"
+            />
+            <div
+              *ngIf="
+                signupForm.get('first_name')?.invalid &&
+                (signupForm.get('first_name')?.dirty ||
+                  signupForm.get('first_name')?.touched)
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('first_name')?.hasError('required')"
+              >
+                Name is required</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('first_name')?.hasError('pattern')"
+              >
+                Name can only have characters</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('first_name')?.hasError('maxlength')"
+              >
+                Maximum length is 25 characters</small
+              >
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="last_name" class="form-label">Last name</label>
+            <input
+              formControlName="last_name"
+              type="text"
+              class="form-control"
+              id="last_name"
+              placeholder="Last Name"
+            />
+            <div
+              *ngIf="
+                signupForm.get('last_name')?.invalid &&
+                (signupForm.get('last_name')?.dirty ||
+                  signupForm.get('last_name')?.touched)
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('last_name')?.hasError('required')"
+              >
+                Lastname is required</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('last_name')?.hasError('pattern')"
+              >
+                Lastname can only have characters</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('last_name')?.hasError('maxlength')"
+              >
+                Maximum length is 25 characters</small
+              >
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              formControlName="username"
+              type="text"
+              class="form-control"
+              id="username"
+              placeholder="Username"
+            />
+            <div
+              *ngIf="
+                signupForm.get('username')?.invalid &&
+                (signupForm.get('username')?.dirty ||
+                  signupForm.get('username')?.touched)
+              "
+            >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('username')?.hasError('required')"
+              >
+                Username is required</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="signupForm.get('username')?.hasError('minlength')"
+              >
+                Minimum length is 5 characters</small
+              ><small
+                class="text-danger"
+                *ngIf="signupForm.get('username')?.hasError('maxlength')"
+              >
+                Maximum length is 35 characters</small
+              ><small
+                class="text-danger"
+                *ngIf="signupForm.get('username')?.hasError('pattern')"
+              >
+                Spaces are not allowed</small
+              >
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              formControlName="password"
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+            />
+            <div
+              *ngIf="
+                signupForm.get('password')?.invalid &&
+                (signupForm.get('password')?.dirty ||
+                  signupForm.get('password')?.touched)
+              "
+            >
+              <ul class="text-danger ps-3">
+                <li *ngIf="signupForm.get('password')?.hasError('required')">
+                  Password is required
+                </li>
+                <li *ngIf="signupForm.get('password')?.hasError('minlength')">
+                  Minimum length is 8 characters
+                </li>
+                <li *ngIf="signupForm.get('password')?.hasError('maxlength')">
+                  Maximum length is 23 characters
+                </li>
+                <li *ngIf="signupForm.get('password')?.hasError('pattern')">
+                  Password must contain at least one lowercase, one uppercase,
+                  one number, one special character and no space
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              [disabled]="signupForm.invalid"
+            >
+              Sign Up
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
