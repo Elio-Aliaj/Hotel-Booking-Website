@@ -10,6 +10,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DashBoardComponent } from './dash-board/dash-board.component';
 import { BookRoomComponent } from './book-room/book-room.component';
+import { BookingsComponent } from './dash-board/bookings/bookings.component';
+import { UsersComponent } from './dash-board/users/users.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { EditFieldComponent } from './dash-board/edit-field/edit-field.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,10 @@ import { BookRoomComponent } from './book-room/book-room.component';
     RoomListComponent,
     DashBoardComponent,
     BookRoomComponent,
+    BookingsComponent,
+    UsersComponent,
+    NavBarComponent,
+    EditFieldComponent,
   ],
   imports: [
     BrowserModule,

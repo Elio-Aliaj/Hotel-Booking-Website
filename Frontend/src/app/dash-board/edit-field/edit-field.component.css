@@ -1,0 +1,15 @@
+.form-container {
+  background-color: rgba(213, 220, 229, 0.616);
+  padding: 40px;
+  border-radius: 0.3em;
+  height: calc(100vh - 200px);
+  display: flex;
+}
+.form-style {
+  margin: auto 0px;
+  width: 100%;
+}
+.form-style input,
+select {
+  box-shadow: 0px 0px 5px 1px;
+}

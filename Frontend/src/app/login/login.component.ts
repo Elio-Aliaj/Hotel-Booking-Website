@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DataService } from '../sevices/data.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private _dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (res) => {
           this.loginForm.reset();
+
           if (res.role === 'admin') {
             this.router.navigate(['dashBoard']);
           } else if (res.role === 'user') {

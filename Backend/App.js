@@ -8,6 +8,7 @@ import mysql from "mysql2";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import multer from "multer";
 
 const pool = mysql
   .createPool({
@@ -18,9 +19,6 @@ const pool = mysql
   })
   .promise();
 
-// await pool.query(
-//   "INSERT INTO user (name,last, role, password, username) VALUES ('Ben','Hoshi','user','password','Ben-Hoshi')"
-// );
 const app = express();
 app.use(cookieParser());
 app.use(
@@ -30,6 +28,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
 const port = 3000;
 
 app.get("/Rooms", async (req, res) => {
@@ -155,12 +154,10 @@ app.post("/Book", async (req, res) => {
       [req.bookDate, req.room]
     );
     if (exist.length > 0) {
-      return res
-        .status(409)
-        .send({
-          message:
-            "This reservation already exists for that day, chose another day",
-        });
+      return res.status(409).send({
+        message:
+          "This reservation already exists for that day, chose another day",
+      });
     }
     await pool.query(
       "INSERT INTO Booking (username, room_id, reservation_date) VALUES (?,?,?)",
@@ -173,8 +170,203 @@ app.post("/Book", async (req, res) => {
   }
 });
 
+app.get("/Users", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth) {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    if (auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    const [users] = await pool.query("SELECT * FROM user WHERE username <> ?", [
+      auth.username,
+    ]);
+
+    res.status(200).send({ users, auth });
+  } catch (error) {
+    return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
+app.get("/Booking", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth) {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    if (auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    const [bookings] = await pool.query("SELECT * FROM Booking");
+
+    res.status(200).send({ bookings, auth });
+  } catch (error) {
+    return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
+app.get("/auth", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth) {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+
+    res.status(200).send({ auth });
+  } catch (error) {
+    return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.put("/editRoom", upload.single("image"), async (req, res) => {
+  if (req.file === undefined) {
+    return res.status(404).send({ message: "File not found" });
+  } else if (req.file.size > 14000000) {
+    return res
+      .status(413)
+      .send({ message: "File size exceeds maximum allowed" });
+  }
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    const image = req.file.buffer.toString("base64");
+
+    await pool.query(
+      "UPDATE room SET surface = ?, orientation = ?, nightly_price = ?, image = ? WHERE room_id = ?",
+      [
+        req.body.surface,
+        req.body.orientation,
+        req.body.nightly_price,
+        image,
+        req.body.roomId,
+      ]
+    );
+
+    return res.status(200).send({ message: "Room Card Edited Successfully" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send(e);
+  }
+});
+
+app.post("/addRoom", upload.single("image"), async (req, res) => {
+  if (req.file === undefined) {
+    return res.status(404).send({ message: "File not found" });
+  } else if (req.file.size > 14000000) {
+    return res
+      .status(413)
+      .send({ message: "File size exceeds maximum allowed" });
+  }
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    const image = req.file.buffer.toString("base64");
+
+    await pool.query(
+      "INSERT INTO room (surface, orientation, nightly_price, image) VALUES (?, ?, ?, ?)",
+      [req.body.surface, req.body.orientation, req.body.nightly_price, image]
+    );
+
+    return res.status(200).send({ message: "Room Card Added Successfully" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send(e);
+  }
+});
+
+app.delete("/deleteRoom/:roomId", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    await pool.query("DELETE FROM Room WHERE room_id = ?", [req.params.roomId]);
+    await pool.query("DELETE FROM Booking WHERE room_id = ?", [
+      req.params.roomId,
+    ]);
+
+    res.status(200).send({ message: "Room Card Deleted Successfully" });
+  } catch (error) {
+    return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
+app.delete("/deleteBook/:bookID", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    await pool.query("DELETE FROM Booking WHERE booking_id = ?", [
+      req.params.bookID,
+    ]);
+
+    res.status(200).send({ message: "Booking Deleted Successfully" });
+  } catch (error) {
+    return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
+app.delete("/deleteUser/:userID", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    console.log(req.params.userID);
+    await pool.query("DELETE FROM Booking WHERE username = ?", [
+      req.params.userID,
+    ]);
+
+    await pool.query("DELETE FROM user WHERE username = ?", [
+      req.params.userID,
+    ]);
+
+    res.status(200).send({ message: "User Deleted Successfully" });
+  } catch (error) {
+    return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
 app.listen(port, () => {
-  console.log("Service listening on port " + port);
+  console.log(
+    chalk.bgHex("#460171")(
+      "-----------------:: Service listening on port: " +
+        port +
+        " ::-----------------"
+    )
+  );
 });
 
 async function encrypter(password) {

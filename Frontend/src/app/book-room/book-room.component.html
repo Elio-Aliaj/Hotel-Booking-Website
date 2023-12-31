@@ -1,19 +1,174 @@
-<nav class="navbar navbar-dark bg-dark sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">{{ username }}</a>
-    <button class="btn btn-outline-success" (click)="logOut()">Log Out</button>
-  </div>
-</nav>
+<app-nav-bar></app-nav-bar>
 <div class="centered-window m-5 book">
   <div class="card" style="height: 100%">
-    <div class="image-container">
+    <!-- Admin edit form -->
+    <form
+      class="m-5 mt-auto mb-auto"
+      *ngIf="this.auth?.role == 'admin'"
+      [formGroup]="addEditRooms"
+      (ngSubmit)="addEditRoom()"
+      enctype="multipart/form-data"
+    >
+      <h2 class="text-center mb-5" *ngIf="this.roomId > 0">
+        Change the fields to edit the room card
+      </h2>
+      <h2 class="text-center mb-5" *ngIf="this.roomId < 0">
+        Fill the form to create new room card
+      </h2>
+      <div class="mb-4">
+        <label for="surface" class="form-label">Surface of the room</label>
+        <input
+          type="number"
+          class="form-control"
+          id="surface"
+          placeholder="ex. 350"
+          formControlName="surface"
+        />
+        <div
+          *ngIf="
+            addEditRooms.get('surface')?.invalid &&
+            (addEditRooms.get('surface')?.dirty ||
+              addEditRooms.get('surface')?.touched)
+          "
+        >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('surface')?.hasError('required')"
+          >
+            Surface is required</small
+          >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('surface')?.hasError('max')"
+          >
+            Max surface can be a number of 10,000</small
+          >
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="orientation" class="form-label"
+          >Orientation of the room</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="orientation"
+          placeholder="ex. sea or opposite of the sed or sides "
+          formControlName="orientation"
+        />
+        <div
+          *ngIf="
+            addEditRooms.get('orientation')?.invalid &&
+            (addEditRooms.get('orientation')?.dirty ||
+              addEditRooms.get('orientation')?.touched)
+          "
+        >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('orientation')?.hasError('required')"
+          >
+            Orientation is required</small
+          >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('orientation')?.hasError('pattern')"
+          >
+            Orientation can only have characters</small
+          >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('orientation')?.hasError('maxlength')"
+          >
+            Maximum length is 100 characters</small
+          >
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="nightly_price" class="form-label"
+          >Price for one night</label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="nightly_price"
+          placeholder="ex. 147"
+          formControlName="nightly_price"
+        />
+        <div
+          *ngIf="
+            addEditRooms.get('nightly_price')?.invalid &&
+            (addEditRooms.get('nightly_price')?.dirty ||
+              addEditRooms.get('nightly_price')?.touched)
+          "
+        >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('nightly_price')?.hasError('required')"
+          >
+            Price is required</small
+          >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('nightly_price')?.hasError('max')"
+          >
+            Max Price can be 100,000</small
+          >
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="image" class="form-label">Insert a photo of the room</label>
+        <input
+          accept="image/*"
+          class="form-control form-control-lg"
+          id="image"
+          type="file"
+          formControlName="image"
+          name="image"
+          (change)="imageSelected($event)"
+        />
+        <div
+          *ngIf="
+            addEditRooms.get('nightly_price')?.invalid &&
+            (addEditRooms.get('nightly_price')?.dirty ||
+              addEditRooms.get('nightly_price')?.touched)
+          "
+        >
+          <small
+            class="text-danger"
+            *ngIf="addEditRooms.get('nightly_price')?.hasError('required')"
+          >
+            Image is required</small
+          >
+        </div>
+        <small class="text-danger" *ngIf="this.imageWarning">
+          Image can be up to <b>10 MB</b></small
+        >
+        <small class="text-danger" *ngIf="this.notImage">
+          The file you uploaded is not allowed.
+          <b>Upload: .png .jpeg .jpg</b></small
+        >
+      </div>
+      <div class="mt-5 d-grid col-4 mx-auto">
+        <button
+          type="submit"
+          class="btn btn-primary mb-5 with"
+          [disabled]="
+            this.imageWarning || addEditRooms.invalid || this.notImage
+          "
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+    <!-- User book form -->
+    <div class="image-container" *ngIf="this.auth?.role != 'admin'">
       <img
         class="img-room"
-        src="https://imgs.search.brave.com/6OLvpQ982pCVBbiMhkInY5aWbU3AABWXY5tyLzooJT8/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTg0/NjA5MDU3L3Bob3Rv/L2x1eHVyeS1ob3Rl/bC1yb29tLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1OTjFP/VGRkdlV4R3gtQ05T/SFllMlNRdnNWN2Rp/TWc4QUJ5SWxuSE0z/OVh3PQ"
+        [src]="getSanitizedImage(room?.image)"
         alt="Image"
       />
     </div>
-    <div class="card-body" *ngIf="this.room">
+    <div class="card-body" *ngIf="this.room && this.auth?.role != 'admin'">
       <h5 class="card-title">Room Number {{ room.room_id }}</h5>
       <p class="card-text">
         “Book your stay now and enjoy a breathtaking view of the sea from our
@@ -25,6 +180,7 @@
       </p>
     </div>
     <form
+      *ngIf="this.auth?.role != 'admin'"
       class="m-5 row g-3 align-items-center"
       [formGroup]="bookForm"
       (ngSubmit)="book()"

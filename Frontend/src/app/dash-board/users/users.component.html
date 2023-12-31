@@ -1,0 +1,40 @@
+<div class="m-5 table-container">
+  <table class="table table-hover table-striped">
+    <thead class="table-dark sticky-top">
+      <tr>
+        <th scope="col">UserName</th>
+        <th scope="col">Name</th>
+        <th scope="col">LastName</th>
+        <th scope="col">Role</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; let i = index" X>
+        <th scope="row">{{ user.username }}</th>
+        <td>{{ user.name }}</td>
+        <td>{{ user.last }}</td>
+        <td>{{ user.role }}</td>
+        <!-- <td>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="editUser(user.username)"
+          >
+            Edit
+          </button>
+        </td> -->
+        <td>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteUser(user.username, i)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

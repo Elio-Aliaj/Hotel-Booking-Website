@@ -1,0 +1,34 @@
+<div>
+  <nav class="navbar navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand">{{ auth.username }}</a>
+      <div *ngIf="auth.role == 'admin'">
+        <button
+          routerLink="rooms"
+          routerLinkActive="active"
+          type="button"
+          class="btn btn-outline-success ms-4"
+        >
+          Rooms
+        </button>
+        <button
+          routerLink="bookings"
+          routerLinkActive="active"
+          type="button"
+          class="btn btn-outline-success ms-4"
+        >
+          Bookings
+        </button>
+        <button
+          routerLink="users"
+          routerLinkActive="active"
+          type="button"
+          class="btn btn-outline-success ms-4"
+        >
+          Users
+        </button>
+      </div>
+      <button class="btn btn-outline-danger" (click)="logOut()">Log Out</button>
+    </div>
+  </nav>
+</div>

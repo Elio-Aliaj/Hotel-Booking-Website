@@ -17,4 +17,25 @@
 }
 .card-shadow {
   box-shadow: 2px 2px 8px 1px black;
+  height: 100%;
+}
+.add-room-card {
+  cursor: pointer;
+}
+.card-add {
+  height: 100%;
+}
+.add-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border-radius: 0px 0px 0.375rem 0.375rem;
+}
+.all-card-image {
+  width: 100%;
+  max-height: 500px;
+  min-height: 250px;
+  object-fit: cover;
 }

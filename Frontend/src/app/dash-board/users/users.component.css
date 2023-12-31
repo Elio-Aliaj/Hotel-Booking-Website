@@ -1,0 +1,18 @@
+.table-container {
+  background-color: #212529;
+  overflow-y: auto;
+  height: calc(100vh - 154px);
+  border-radius: 0.575rem;
+}
+.table-container::-webkit-scrollbar {
+  width: 0.8em;
+}
+.table-container::-webkit-scrollbar-track {
+  background-color: transparent;
+  margin-block: 2.5em;
+}
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 20px;
+  border: 0.15em solid #212529;
+}

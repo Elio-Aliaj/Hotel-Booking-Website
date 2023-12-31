@@ -1,10 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../sevices/data.service';
 
 @Component({
   selector: 'app-dash-board',
   templateUrl: './dash-board.component.html',
-  styleUrl: './dash-board.component.css'
+  styleUrl: './dash-board.component.css',
 })
-export class DashBoardComponent {
+export class DashBoardComponent implements OnInit {
+  auth: any = {};
 
+  constructor(private _dataService: DataService) {}
+
+  ngOnInit(): void {
+    this._dataService.authData().subscribe(
+      (res: any) => {
+        this.auth = res.auth;
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    );
+  }
 }

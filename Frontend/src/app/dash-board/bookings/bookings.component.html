@@ -1,0 +1,30 @@
+<div class="m-5 table-container">
+  <table class="table table-hover table-striped">
+    <thead class="table-dark sticky-top">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">UserName</th>
+        <th scope="col">Room</th>
+        <th scope="col">Reservation Day</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of bookings; let i = index" X>
+        <th scope="row">{{ booking.booking_id }}</th>
+        <td>{{ booking.username }}</td>
+        <td>{{ booking.room_id }}</td>
+        <td>{{ booking.reservation_date | date : "dd-MM-yyyy" }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteBooking(booking.booking_id, i)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,21 +1,33 @@
 <div>
-  <nav class="navbar navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">{{ username }}</a>
-      <button class="btn btn-outline-success" (click)="logOut()">
-        Log Out
-      </button>
-    </div>
-  </nav>
+  <app-nav-bar *ngIf="auth?.role != 'admin'"></app-nav-bar>
   <section class="list-section p-3">
     <div class="row row-cols-1 row-cols-md-3 g-3 mt-0">
-      <div class="col" *ngFor="let room of rooms">
+      <!-- Add room card -->
+      <div
+        class="col add-room-card"
+        (click)="addRoom()"
+        *ngIf="auth?.role == 'admin'"
+      >
+        <div class="card card-add card-shadow">
+          <img
+            src="https://www.svgrepo.com/show/521942/add-ellipse.svg"
+            alt="Add Room Photo"
+            style="max-height: 600px"
+          />
+          <div class="card-body add-text">
+            <h5 class="card-title text-center">
+              <b>Add New Room</b>
+            </h5>
+          </div>
+        </div>
+      </div>
+      <!-- All rooms cards -->
+      <div class="col" *ngFor="let room of rooms; let i = index">
         <div class="card card-shadow">
           <img
-            src="https://imgs.search.brave.com/6OLvpQ982pCVBbiMhkInY5aWbU3AABWXY5tyLzooJT8/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTg0/NjA5MDU3L3Bob3Rv/L2x1eHVyeS1ob3Rl/bC1yb29tLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1OTjFP/VGRkdlV4R3gtQ05T/SFllMlNRdnNWN2Rp/TWc4QUJ5SWxuSE0z/OVh3PQ"
-            class="card-img-top"
+            [src]="getSanitizedImage(room.image)"
+            class="card-img-top all-card-image"
             alt="Room Photo"
-            style="height: fit-content"
           />
           <div class="card-body">
             <h5 class="card-title">Room Number {{ room.room_id }}</h5>
@@ -27,13 +39,31 @@
               stay is <b>${{ room.nightly_price }}</b
               >!”
             </p>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center gap-4">
               <button
                 type="submit"
                 class="btn btn-primary"
                 (click)="book(room.room_id)"
+                *ngIf="this.auth?.role != 'admin'"
               >
                 Book
+              </button>
+              <!-- Admin Buttons -->
+              <button
+                type="submit"
+                class="btn btn-success"
+                (click)="book(room.room_id)"
+                *ngIf="this.auth?.role == 'admin'"
+              >
+                Edit
+              </button>
+              <button
+                type="submit"
+                class="btn btn-danger"
+                (click)="deleteRoomCard(room.room_id, i)"
+                *ngIf="this.auth?.role == 'admin'"
+              >
+                Delete
               </button>
             </div>
           </div>
