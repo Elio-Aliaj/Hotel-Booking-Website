@@ -16,16 +16,16 @@
   <summary>Table of Contents 📋</summary>
   <ol>
     <li>
-      <a href="#hotel-booking-website-%EF%B8%8F">Hotel Booking Website 🔰</a>
+      <a href="#hotel-booking-website-">Hotel Booking Website 🔰</a>
       <ul>
         <li><a href="#key-features-%EF%B8%8F">Key Features 🔑</a></li>
         <ul>
-          <li><a href="#admin-privileges-%EF%B8%8F">Admin Privileges 🔐</a></li>
+          <li><a href="#admin-privileges-">Admin Privileges 🔐</a></li>
         </ul> 
-        <li><a href="#tech-stack-%EF%B8%8F">Tech Stack 🧰</a></li>
+        <li><a href="#tech-stack-">Tech Stack 🧰</a></li>
           <ul>
             <li><a href="#frontend-%EF%B8%8F">Frontend 🖥️</a></li>
-            <li><a href="#backend-%EF%B8%8F">Backend 🦾</a></li>
+            <li><a href="#backend-">Backend 🦾</a></li>
             <li><a href="#database-%EF%B8%8F">Database 🗃️</a></li>
           </ul>
       </ul>
@@ -35,7 +35,7 @@
       <ul>
         <li><a href="#prerequisites-">Prerequisites 📦</a></li>
         <li><a href="#installation-%EF%B8%8F">Installation ⬇️</a></li>
-        <li><a href="#running-&-configuration-%EF%B8%8F">Running & Configuration 🚀</a>
+        <li><a href="#running--configuration-">Running & Configuration 🚀</a>
           <ul>
         <li><a href="#configuration-%EF%B8%8F">Configuration ⚙️</a>
         <li><a href="#running-%EF%B8%8F">Running 🏃‍♂️</a>
@@ -51,7 +51,6 @@
     </li>
     <li><a href="#license-">License 🪪</a></li>
     <li><a href="#contact-">Contact 📞</a></li>
-
   </ol>
 </details>
 
