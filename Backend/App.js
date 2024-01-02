@@ -35,7 +35,7 @@ app.get("/Rooms", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth) {
       return res.status(401).send({ message: "unauthorized" });
@@ -119,7 +119,7 @@ app.post("/Login", async (req, res) => {
         username: queryResponse[0].username,
         role: queryResponse[0].role,
       },
-      "secretKey"
+      process.env.AUTH_KEY
     );
 
     res
@@ -143,7 +143,7 @@ app.post("/Book", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth) {
       return res.status(401).send({ message: "unauthorized" });
@@ -174,7 +174,7 @@ app.get("/Users", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth) {
       return res.status(401).send({ message: "unauthorized" });
@@ -197,7 +197,7 @@ app.get("/Booking", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth) {
       return res.status(401).send({ message: "unauthorized" });
@@ -217,7 +217,7 @@ app.get("/auth", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth) {
       return res.status(401).send({ message: "unauthorized" });
@@ -235,7 +235,7 @@ app.put("/editUser", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
@@ -265,7 +265,7 @@ app.put("/editUser", async (req, res) => {
 app.put("/editBookings", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
     }
@@ -310,7 +310,7 @@ app.post("/addRoom", upload.single("image"), async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
@@ -333,7 +333,7 @@ app.delete("/deleteRoom/:roomId", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
@@ -353,7 +353,7 @@ app.delete("/deleteBook/:bookID", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
@@ -372,7 +372,7 @@ app.delete("/deleteUser/:userID", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
@@ -403,7 +403,7 @@ app.put("/editRoom", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
-    const auth = jwt.verify(cookie, "secretKey");
+    const auth = jwt.verify(cookie, process.env.AUTH_KEY);
 
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
