@@ -1,5 +1,68 @@
 <div class="m-5 form-container">
-  <form class="form-style" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <form
+    class="form-style"
+    [formGroup]="bookingForm"
+    (ngSubmit)="editBooking()"
+    *ngIf="this.editBookingStatus == true"
+  >
+    <div class="m-3">
+      <label for="username" class="form-label">User Name</label>
+      <select
+        class="form-select form-select-lg mb-3"
+        aria-label="Large select example"
+        id="username"
+        formControlName="username"
+      >
+        <option
+          [value]="user.username"
+          *ngFor="let user of users; let i = index"
+        >
+          {{ user.username }}
+        </option>
+      </select>
+    </div>
+    <div class="m-3">
+      <label for="room" class="form-label">Room Number</label>
+      <select
+        class="form-select form-select-lg mb-3"
+        aria-label="Large select example"
+        id="room"
+        formControlName="room"
+      >
+        <option
+          [value]="room.room_id"
+          *ngFor="let room of rooms; let i = index"
+        >
+          {{ room.room_id }}
+        </option>
+      </select>
+    </div>
+    <div class="m-3">
+      <label for="date" class="form-label">Reservation Date</label>
+      <input
+        type="date"
+        class="form-select form-select-lg mb-3"
+        aria-label="Large select example"
+        id="date"
+        formControlName="date"
+      />
+    </div>
+    <div class="m-3 text-center">
+      <button
+        type="submit"
+        class="btn btn-primary m-5"
+        [disabled]="bookingForm.invalid"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+  <form
+    class="form-style"
+    [formGroup]="userForm"
+    (ngSubmit)="editUser()"
+    *ngIf="this.editBookingStatus == false"
+  >
     <div class="m-3">
       <label for="username" class="form-label">UserName</label>
       <input
@@ -9,6 +72,31 @@
         placeholder="UserName"
         formControlName="username"
       />
+      <div
+        *ngIf="
+          userForm.get('username')?.invalid &&
+          (userForm.get('username')?.dirty || userForm.get('username')?.touched)
+        "
+      >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('username')?.hasError('required')"
+        >
+          Username is required</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('username')?.hasError('pattern')"
+        >
+          Username can only have characters</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('username')?.hasError('maxlength')"
+        >
+          Maximum length is 50 characters</small
+        >
+      </div>
     </div>
     <div class="m-3">
       <label for="name" class="form-label">First Name</label>
@@ -19,6 +107,31 @@
         placeholder="First Name"
         formControlName="name"
       />
+      <div
+        *ngIf="
+          userForm.get('name')?.invalid &&
+          (userForm.get('name')?.dirty || userForm.get('name')?.touched)
+        "
+      >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('name')?.hasError('required')"
+        >
+          Name is required</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('name')?.hasError('pattern')"
+        >
+          Name can only have characters</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('name')?.hasError('maxlength')"
+        >
+          Maximum length is 50 characters</small
+        >
+      </div>
     </div>
     <div class="m-3">
       <label for="last" class="form-label">Last Name</label>
@@ -29,6 +142,31 @@
         placeholder="Last Name"
         formControlName="last"
       />
+      <div
+        *ngIf="
+          userForm.get('last')?.invalid &&
+          (userForm.get('last')?.dirty || userForm.get('last')?.touched)
+        "
+      >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('last')?.hasError('required')"
+        >
+          Last Name is required</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('last')?.hasError('pattern')"
+        >
+          Last Name can only have characters</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="userForm.get('last')?.hasError('maxlength')"
+        >
+          Maximum length is 50 characters</small
+        >
+      </div>
     </div>
     <div class="m-3">
       <label for="role" class="form-label">Role</label>
@@ -36,14 +174,18 @@
         class="form-select form-select-lg mb-3"
         aria-label="Large select example"
         id="role"
+        formControlName="role"
       >
-        <option selected>Open this select menu</option>
-        <option value="1">User</option>
-        <option value="2">Admin</option>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
       </select>
     </div>
     <div class="m-3 text-center">
-      <button type="submit" class="btn btn-primary m-5" [disabled]="">
+      <button
+        type="submit"
+        class="btn btn-primary m-5"
+        [disabled]="userForm.invalid"
+      >
         Submit
       </button>
     </div>

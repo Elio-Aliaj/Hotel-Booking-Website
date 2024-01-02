@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../sevices/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bookings',
@@ -9,7 +10,7 @@ import { DataService } from '../../sevices/data.service';
 export class BookingsComponent implements OnInit {
   bookings: any;
 
-  constructor(private _dataService: DataService) {}
+  constructor(private _dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
     this._dataService.bookingData().subscribe(
@@ -34,5 +35,8 @@ export class BookingsComponent implements OnInit {
     } else {
       alert('Canceled');
     }
+  }
+  editBooking(booking_id: number): void {
+    this.router.navigate(['dashBoard/editField', booking_id]);
   }
 }

@@ -182,9 +182,10 @@ app.get("/Users", async (req, res) => {
     if (auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
     }
-    const [users] = await pool.query("SELECT * FROM user WHERE username <> ?", [
-      auth.username,
-    ]);
+    const [users] = await pool.query(
+      "SELECT name, last, role, username FROM user WHERE username <> ?",
+      [auth.username]
+    );
 
     res.status(200).send({ users, auth });
   } catch (error) {
@@ -230,14 +231,7 @@ app.get("/auth", async (req, res) => {
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.put("/editRoom", upload.single("image"), async (req, res) => {
-  if (req.file === undefined) {
-    return res.status(404).send({ message: "File not found" });
-  } else if (req.file.size > 14000000) {
-    return res
-      .status(413)
-      .send({ message: "File size exceeds maximum allowed" });
-  }
+app.put("/editUser", async (req, res) => {
   try {
     const cookie = req.cookies["jwt"];
 
@@ -246,26 +240,65 @@ app.put("/editRoom", upload.single("image"), async (req, res) => {
     if (!auth || auth.role !== "admin") {
       return res.status(401).send({ message: "unauthorized" });
     }
-    const image = req.file.buffer.toString("base64");
 
     await pool.query(
-      "UPDATE room SET surface = ?, orientation = ?, nightly_price = ?, image = ? WHERE room_id = ?",
+      "UPDATE user SET username = ?, name = ?, last = ?, role = ? WHERE username = ?",
       [
-        req.body.surface,
-        req.body.orientation,
-        req.body.nightly_price,
-        image,
-        req.body.roomId,
+        req.body.formData.username,
+        req.body.formData.name,
+        req.body.formData.last,
+        req.body.formData.role,
+        req.body.username,
       ]
     );
+    await pool.query("UPDATE Booking SET username = ? WHERE username = ?", [
+      req.body.formData.username,
+      req.body.username,
+    ]);
 
-    return res.status(200).send({ message: "Room Card Edited Successfully" });
+    return res.status(200).send({ message: "User Edited Successfully" });
   } catch (e) {
     console.error(e);
     return res.status(500).send(e);
   }
 });
+app.put("/editBookings", async (req, res) => {
+  try {
+    const cookie = req.cookies["jwt"];
+    const auth = jwt.verify(cookie, "secretKey");
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    try {
+      const [[dateExists]] = await pool.query(
+        "SELECT EXISTS (SELECT 1 FROM booking WHERE room_id = ? AND reservation_date = ?) AS date_exists",
+        [req.body.formData.room, req.body.formData.date]
+      );
+      if (dateExists.date_exists == 1) {
+        return res
+          .status(409)
+          .send({ message: "This Reservation exists already" });
+      } else {
+        await pool.query(
+          "UPDATE Booking SET username = ?, room_id = ?, reservation_date = ? WHERE booking_id = ?",
+          [
+            req.body.formData.username,
+            req.body.formData.room,
+            req.body.formData.date,
+            req.body.booking_id,
+          ]
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
 
+    return res.status(200).send({ message: "Booking Edited Successfully" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send(e);
+  }
+});
 app.post("/addRoom", upload.single("image"), async (req, res) => {
   if (req.file === undefined) {
     return res.status(404).send({ message: "File not found" });
@@ -356,6 +389,42 @@ app.delete("/deleteUser/:userID", async (req, res) => {
     res.status(200).send({ message: "User Deleted Successfully" });
   } catch (error) {
     return res.status(401).send({ message: "unauthorized", error: error });
+  }
+});
+
+app.put("/editRoom", async (req, res) => {
+  if (req.file === undefined) {
+    return res.status(404).send({ message: "File not found" });
+  } else if (req.file.size > 14000000) {
+    return res
+      .status(413)
+      .send({ message: "File size exceeds maximum allowed" });
+  }
+  try {
+    const cookie = req.cookies["jwt"];
+
+    const auth = jwt.verify(cookie, "secretKey");
+
+    if (!auth || auth.role !== "admin") {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    const image = req.file.buffer.toString("base64");
+
+    await pool.query(
+      "UPDATE room SET surface = ?, orientation = ?, nightly_price = ?, image = ? WHERE room_id = ?",
+      [
+        req.body.surface,
+        req.body.orientation,
+        req.body.nightly_price,
+        image,
+        req.body.roomId,
+      ]
+    );
+
+    return res.status(200).send({ message: "Room Card Edited Successfully" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send(e);
   }
 });
 

@@ -11,14 +11,5 @@ export class DashBoardComponent implements OnInit {
 
   constructor(private _dataService: DataService) {}
 
-  ngOnInit(): void {
-    this._dataService.authData().subscribe(
-      (res: any) => {
-        this.auth = res.auth;
-      },
-      (err: any) => {
-        console.log(err);
-      }
-    );
-  }
+  ngOnInit(): void {}
 }

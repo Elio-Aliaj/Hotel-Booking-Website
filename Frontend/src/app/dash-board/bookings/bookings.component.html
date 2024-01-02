@@ -7,6 +7,7 @@
         <th scope="col">Room</th>
         <th scope="col">Reservation Day</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -15,6 +16,15 @@
         <td>{{ booking.username }}</td>
         <td>{{ booking.room_id }}</td>
         <td>{{ booking.reservation_date | date : "dd-MM-yyyy" }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="editBooking(booking.booking_id)"
+          >
+            Edit
+          </button>
+        </td>
         <td>
           <button
             type="button"

@@ -14,12 +14,12 @@ export class DataService {
       withCredentials: true,
     });
   }
-  roomsData(): any {
+  roomsData(): Observable<any> {
     return this.http.get<any>('http://localhost:3000/Rooms', {
       withCredentials: true,
     });
   }
-  usersData(): any {
+  usersData(): Observable<any> {
     return this.http.get<any>('http://localhost:3000/Users', {
       withCredentials: true,
     });
@@ -39,6 +39,24 @@ export class DataService {
         withCredentials: true,
       });
     }
+  }
+  editUser(formData: any, username: string): Observable<any> {
+    return this.http.put<any>(
+      'http://localhost:3000/editUser',
+      { formData, username },
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  editBooking(formData: any, booking_id: number): Observable<any> {
+    return this.http.put<any>(
+      'http://localhost:3000/editBookings',
+      { formData, booking_id },
+      {
+        withCredentials: true,
+      }
+    );
   }
   deleteRoom(roomId: any): Observable<any> {
     return this.http.delete(`http://localhost:3000/deleteRoom/${roomId}`, {
