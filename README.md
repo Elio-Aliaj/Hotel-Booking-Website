@@ -209,7 +209,7 @@ _I am assuming that you know how to set up your database if not this [video](htt
     ```
 
     ```powershell
-    node ./App.js
+    node .\App.js
     ```
 
     <details>
